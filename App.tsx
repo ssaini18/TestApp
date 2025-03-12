@@ -13,6 +13,7 @@ import Pagination from './src/screens/pagination';
 import FileExplorer from './src/screens/fileexplorer';
 import TransactinList from './src/screens/TransactionList';
 import AddExpense from './src/screens/AddExpense';
+import { TransactionsProvider } from './src/context/TransactionData';
 
 function HomeScreen() {
   const navigation = useNavigation();
@@ -38,18 +39,16 @@ const Stack = createNativeStackNavigator();
 
 function App(): React.JSX.Element {
   return <NavigationContainer>
-    <Stack.Navigator>
-      <Stack.Screen name='Home' component={HomeScreen} options={{'title': 'Home'}}/>
-      <Stack.Screen name='Pagination' component={Pagination} options={{'title': 'Pagination'}}/>
-      <Stack.Screen name='FileExplorer' component={FileExplorer} options={{'title': 'File Explorer'}}/>
-      <Stack.Screen name="TransactionHome" component={TransactinList} options={{title: 'Transactions'}}/>
-      <Stack.Screen name="AddExpense" component={AddExpense} options={{title:'Add Expense'}}/>
-    </Stack.Navigator>
-  </NavigationContainer>;
+      <TransactionsProvider>
+        <Stack.Navigator>
+          <Stack.Screen name='Home' component={HomeScreen} options={{'title': 'Home'}}/>
+          <Stack.Screen name='Pagination' component={Pagination} options={{'title': 'Pagination'}}/>
+          <Stack.Screen name='FileExplorer' component={FileExplorer} options={{'title': 'File Explorer'}}/>
+          <Stack.Screen name="TransactionHome" component={TransactinList} options={{title: 'Transactions'}}/>
+          <Stack.Screen name="AddExpense" component={AddExpense} options={{title:'Add Expense'}}/>
+        </Stack.Navigator>
+        </TransactionsProvider>
+    </NavigationContainer>;
 }
-
-const styles = StyleSheet.create({
-  
-});
 
 export default App;

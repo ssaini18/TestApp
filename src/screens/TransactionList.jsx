@@ -1,10 +1,11 @@
 import { Button } from "@react-navigation/elements";
 import { useNavigation } from "@react-navigation/native";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { StyleSheet, View, Text, FlatList, SafeAreaView, Pressable } from "react-native";
 import DropDown from "../components/Dropdown";
 import { categories } from "../utils/constants";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { TransactionContext } from "../context/TransactionData";
 
 
 const ExpenseCard = ({item}) => {
@@ -30,16 +31,10 @@ const ExpenseCard = ({item}) => {
     </View>
 }
 
-const TransactinList = ({route}) => {
-    const [transactions, setTransactions] = useState([]);
+const TransactinList = () => {
     const navigation = useNavigation();
     const [category, setCategory] = useState('');
-
-    useEffect(() => {
-    if (route.params?.expenses) {
-        setTransactions(route.params.expenses);
-    }
-    }, [route.params?.expenses]);
+    const {transactions, setTransactions} = useContext(TransactionContext);
 
     useEffect(() => {
         getData();
@@ -57,7 +52,7 @@ const TransactinList = ({route}) => {
     }
 
     const addExpenseClick = () => {
-        navigation.navigate('AddExpense', {expenses: transactions})
+        navigation.navigate('AddExpense')
     };
 
     const updateFilter = (val) => setCategory(val);
