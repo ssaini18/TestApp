@@ -1,6 +1,6 @@
 import { Button } from "@react-navigation/elements";
 import { useNavigation } from "@react-navigation/native";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import { StyleSheet, View, Text, FlatList, SafeAreaView, Pressable } from "react-native";
 import DropDown from "../components/Dropdown";
 import { categories } from "../utils/constants";
@@ -59,13 +59,21 @@ const TransactinList = () => {
 
     const resetFilter = () => setCategory('');
 
-    const totalIncome = transactions
+    const {totalIncome, totalBalance, totalExpense} = useMemo(() => {
+
+        const totalIncome = transactions
                         .filter(v => category ? v.category == category && v.type == 'Income' : v.type == 'Income')
                         .reduce((v, s) => v + Number(s.amount), 0);
-    const totalExpense = transactions
+        const totalExpense = transactions
                         .filter(v => category ? v.category == category && v.type == 'Expense' : v.type == 'Expense')
                         .reduce((v, s) => v + Number(s.amount), 0);
-    const totalBalance = totalIncome - totalExpense;
+        const totalBalance = totalIncome - totalExpense;
+
+        return {totalIncome, totalBalance, totalExpense};
+
+    }, [transactions,category]);
+
+    
 
     return <SafeAreaView style={styles.container}>
         <View style={styles.container}>
